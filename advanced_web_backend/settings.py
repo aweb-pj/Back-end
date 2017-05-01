@@ -25,7 +25,9 @@ SECRET_KEY = '7z2pkf0572%e^8f0wq6^b3dfhwt_dzsl^qu&7czl-39)vm2uak'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'dev.note.tunnel.qydev.com'
+]
 
 
 # Application definition

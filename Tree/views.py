@@ -1,3 +1,4 @@
+from django.http import HttpResponse
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status,generics
@@ -77,11 +78,32 @@ class MaterialView(generics.RetrieveUpdateDestroyAPIView):
         authentication_dict = {}
         authentication_dict['student'] = ['GET','PUT','DELETE']
         authentication_dict['teacher'] = ['GET', 'PUT', 'DELETE']
-        if 'role' not in request.session:
-            raise PermissionDenied("not logged in")
-        if request.method not in authentication_dict[request.session['role']]:
-            raise PermissionDenied("not allowed")
+        #print(request.GET['role'])
+        # if 'role' not in request.session:
+        #     raise PermissionDenied("not logged in")
+        # if request.method not in authentication_dict[request.session['role']]:
+        #     raise PermissionDenied("not allowed")
         super(generics.RetrieveUpdateDestroyAPIView, self).initial(request, *args, **kwargs)
+
+    def get(self,request,pk):
+        materials = self.queryset.filter(pk=pk)
+        if materials.exists():
+            material = materials[0]
+            response = HttpResponse(status = status.HTTP_200_OK)
+            response['Content-Disposition'] = 'attachment;filename='+material.material_name# downfile.txt为下载后的文件名
+            full_path = os.path.join('', str(material.material_file))  # filename.txt为将要被下载的文件名
+            print(full_path)
+            if os.path.exists(full_path):
+                response['Content-Length'] = os.path.getsize(full_path)  # 可不加
+                content = open(full_path, 'rb').read()
+                response.write(content)
+                return response
+            else:
+                return HttpResponse(u'文件未找到')
+        else:
+            return Response(status = status.HTTP_404_NOT_FOUND)
+
+
 
 
 class HomeworkView(generics.RetrieveUpdateDestroyAPIView):
