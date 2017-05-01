@@ -2,18 +2,18 @@
 
 {
 
-    teacher_name (char,max 100)
-    teacher_id (char,max 100,primary key)
-    teacher_password (char,max 100)
+    name (char,max 100)
+    id (char,max 100,primary key)
+    password (char,max 100)
 }
 
 # Student
 
 {
 
-    student_name (char,max 100)
-    student_id (char,max 100, primary key)
-    student_password (char,max 100)
+    name (char,max 100)
+    id (char,max 100, primary key)
+    password (char,max 100)
 }
 
 1. To create a teacher or student: use teacher as example , student is the same<br>
@@ -72,7 +72,7 @@ method；DELETE
     materials (list of Material)
     homework (list of Homework)
     pk (integer)
-
+    parent (integer pk of parent)
 }
 
 (get,put,delete)url:/tree/node/pk
