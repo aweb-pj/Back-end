@@ -26,7 +26,9 @@ SECRET_KEY = '7z2pkf0572%e^8f0wq6^b3dfhwt_dzsl^qu&7czl-39)vm2uak'
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    'dev.note.tunnel.qydev.com'
+    'dev.note.tunnel.qydev.com',
+    '127.0.0.1',
+    'localhost'
 ]
 
 

@@ -360,6 +360,7 @@ def load_tree_student(node,student_id):
     homework = result_data['homework']
     if len(homework) == 1:
         homework = homework[0]
+        processed_homework = []
         for choice_question in homework['choice_questions']:
             current_question = ChoiceQuestion.objects.filter(pk=choice_question['pk'])[0]
             current_student = Student.objects.filter(student_id=student_id)
@@ -369,6 +370,7 @@ def load_tree_student(node,student_id):
                 choice_question['answer'] = answer.answer
             else:
                 choice_question['answer'] = None
+            processed_homework.append(choice_question)
         for text_question in homework['text_questions']:
             current_question = TextQuestion.objects.filter(pk=text_question['pk'])[0]
             current_student = Student.objects.filter(student_id=student_id)
@@ -378,6 +380,11 @@ def load_tree_student(node,student_id):
                 text_question['answer'] = answer.answer
             else:
                 text_question['answer'] = None
+            processed_homework.append(text_question)
+        result_data['homework'] = sorted(processed_homework,key=lambda question:question['order'])
+
+
+
 
     for child in node.get_children():
         result_data['children'].append(load_tree_student(child,student_id))
