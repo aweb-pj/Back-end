@@ -160,14 +160,6 @@ TextQuestion,TextAnswer] is similar:
 * GET->fetch
 * POST->create
 
-* Notice:
-1. You need to do the update in a bottom-up approach:
-for example if I wish to update a question in a homework, I will use the url for updatting a question
-and not change the question in the homework and update the homework
-2. Answers cannot be updated or deleted(easy to change,should you need to)
-3. pk should not be changed and need not be provided in creation
-4. when creating a model do remember to add pk for foreign keys
-
 # Tree
 a tree is implemented by traversing from the root node and adding a children attribute(a list of nodes)to each node.Please DONOT delete the root node.
 
@@ -190,3 +182,12 @@ if the user is a student:
 for every question in the tree:
 
 an answer attribute is added, null means no answer yet
+
+
+# Notice:
+1. You need to do the update in a bottom-up approach:
+for example if I wish to update a question in a homework, I will use the url for updatting a question
+and not change the question in the homework and update the homework
+2. Answers cannot be updated or deleted(easy to change,should you need to)
+3. pk should not be changed and need not be provided in creation
+4. when creating a model do remember to add pk for foreign keys
