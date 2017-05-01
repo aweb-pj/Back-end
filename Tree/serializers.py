@@ -5,14 +5,14 @@ from Tree.models import *
 class TextQuestionSerializer(serializers.ModelSerializer):
     class Meta:
         model = TextQuestion
-        fields = ('prompt','pk')
+        fields = ('prompt','pk','homework')
         read_only_fields = ('pk',)
 
 
 class ChoiceQuestionSerializer(serializers.ModelSerializer):
     class Meta:
         model = ChoiceQuestion
-        fields = ('prompt','A','B','C','D','pk')
+        fields = ('prompt','A','B','C','D','pk','homework')
         read_only_fields = ('pk',)
 
 
@@ -22,14 +22,14 @@ class HomeworkSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Homework
-        fields = ('homework_name','choice_questions','text_questions','pk')
+        fields = ('homework_name','choice_questions','text_questions','pk','node')
         read_only_fields = ('pk',)
 
 
 class MaterialSerializer(serializers.ModelSerializer):
     class Meta:
         model = Material
-        fields = ('material_file','pk')
+        fields = ('material_file','pk','node')
         read_only_fields = ('pk',)
 
 
@@ -46,14 +46,14 @@ class NodeSerializer(serializers.ModelSerializer):
 class TextAnswerSerializer(serializers.ModelSerializer):
     class Meta:
         model = TextAnswer
-        fields = ('answer','student','question','pk')
+        fields = ('answer','pk','question','student')
         read_only_fields = ('pk',)
 
 
 class ChoiceAnswerSerializer(serializers.ModelSerializer):
     class Meta:
         model = ChoiceAnswer
-        fields = ('answer','student','question','pk')
+        fields = ('answer','pk')
         read_only_fields = ('pk',)
 
 

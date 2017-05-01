@@ -4,18 +4,18 @@ from mptt.models import MPTTModel,TreeForeignKey
 
 
 class Student(models.Model):
-    student_name = models.CharField(max_length=20)
-    student_id = models.CharField(max_length=20,primary_key=True)
-    student_password = models.CharField(max_length=30)
+    student_name = models.CharField(max_length=100)
+    student_id = models.CharField(max_length=100,primary_key=True)
+    student_password = models.CharField(max_length=100)
 
     def __str__(self):
         return self.student_name
 
 
 class Teacher(models.Model):
-    teacher_name = models.CharField(max_length=20)
-    teacher_id = models.CharField(max_length=20,primary_key=True)
-    teacher_password = models.CharField(max_length=30)
+    teacher_name = models.CharField(max_length=100)
+    teacher_id = models.CharField(max_length=100,primary_key=True)
+    teacher_password = models.CharField(max_length=100)
 
     def __str__(self):
         return self.teacher_name
@@ -61,7 +61,7 @@ class ChoiceQuestion(models.Model):
 class TextAnswer(models.Model):
     student = models.ForeignKey(Student,on_delete=models.CASCADE)
     question = models.ForeignKey(TextQuestion,on_delete=models.CASCADE)
-    answer = models.CharField(max_length=200)
+    answer = models.CharField(max_length=100)
 
     def __str__(self):
         return self.answer+'pk:'+str(self.pk)
@@ -70,14 +70,14 @@ class TextAnswer(models.Model):
 class ChoiceAnswer(models.Model):
     student = models.ForeignKey(Student,on_delete=models.CASCADE)
     question = models.ForeignKey(ChoiceQuestion,on_delete=models.CASCADE)
-    answer = models.CharField(max_length=10)
+    answer = models.CharField(max_length=100)
 
     def __str__(self):
         return self.answer+'pk:'+str(self.pk)
 
 
 class Material(models.Model):
-    material_name = models.CharField(max_length=50,null=True)
+    material_name = models.CharField(max_length=100,null=True)
     node = models.ForeignKey(Node,related_name='materials',on_delete=models.CASCADE)
     material_file = models.FileField(upload_to="materials/")
 

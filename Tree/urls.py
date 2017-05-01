@@ -5,6 +5,7 @@ from Tree import views
 urlpatterns = [
     url(r'^login/student$',views.student_login),
     url(r'^login/teacher$',views.teacher_login),
+    url(r'^logout$',views.logout),
     url(r'^register/(?P<role>\w+)$',views.register),
     url(r'^get_tree$',views.get_tree),
     url(r'^textquestion/(?P<pk>\w+)$',views.TextQuesionView.as_view()),

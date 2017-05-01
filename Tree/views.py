@@ -120,8 +120,8 @@ class TextQuestionCreationView(generics.CreateAPIView):
 
     def initial(self, request, *args, **kwargs):
         authentication_dict = {}
-        authentication_dict['student'] = ['GET','PUT','DELETE']
-        authentication_dict['teacher'] = ['GET', 'PUT', 'DELETE']
+        authentication_dict['student'] = ['POST']
+        authentication_dict['teacher'] = ['POST']
         if 'role' not in request.session:
             raise PermissionDenied("not logged in")
         if request.method not in authentication_dict[request.session['role']]:
@@ -135,8 +135,8 @@ class ChoiceQuestionCreationView(generics.CreateAPIView):
 
     def initial(self, request, *args, **kwargs):
         authentication_dict = {}
-        authentication_dict['student'] = ['GET','PUT','DELETE']
-        authentication_dict['teacher'] = ['GET', 'PUT', 'DELETE']
+        authentication_dict['student'] = ['POST']
+        authentication_dict['teacher'] = ['POST']
         if 'role' not in request.session:
             raise PermissionDenied("not logged in")
         if request.method not in authentication_dict[request.session['role']]:
@@ -150,8 +150,8 @@ class TextAnswerCreationView(generics.CreateAPIView):
 
     def initial(self, request, *args, **kwargs):
         authentication_dict = {}
-        authentication_dict['student'] = ['GET','PUT','DELETE']
-        authentication_dict['teacher'] = ['GET', 'PUT', 'DELETE']
+        authentication_dict['student'] = ['POST']
+        authentication_dict['teacher'] = ['POST']
         if 'role' not in request.session:
             raise PermissionDenied("not logged in")
         if request.method not in authentication_dict[request.session['role']]:
@@ -165,8 +165,8 @@ class ChoiceAnswerCreationView(generics.CreateAPIView):
 
     def initial(self, request, *args, **kwargs):
         authentication_dict = {}
-        authentication_dict['student'] = ['GET','PUT','DELETE']
-        authentication_dict['teacher'] = ['GET', 'PUT', 'DELETE']
+        authentication_dict['student'] = ['POST']
+        authentication_dict['teacher'] = ['POST']
         if 'role' not in request.session:
             raise PermissionDenied("not logged in")
         if request.method not in authentication_dict[request.session['role']]:
@@ -180,8 +180,8 @@ class MaterialCreationView(generics.CreateAPIView):
 
     def initial(self, request, *args, **kwargs):
         authentication_dict = {}
-        authentication_dict['student'] = ['GET','PUT','DELETE']
-        authentication_dict['teacher'] = ['GET', 'PUT', 'DELETE']
+        authentication_dict['student'] = ['POST']
+        authentication_dict['teacher'] = ['POST']
         if 'role' not in request.session:
             raise PermissionDenied("not logged in")
         if request.method not in authentication_dict[request.session['role']]:
@@ -195,8 +195,8 @@ class HomeworkCreationView(generics.CreateAPIView):
 
     def initial(self, request, *args, **kwargs):
         authentication_dict = {}
-        authentication_dict['student'] = ['GET','PUT','DELETE']
-        authentication_dict['teacher'] = ['GET', 'PUT', 'DELETE']
+        authentication_dict['student'] = ['POST']
+        authentication_dict['teacher'] = ['POST']
         if 'role' not in request.session:
             raise PermissionDenied("not logged in")
         if request.method not in authentication_dict[request.session['role']]:
@@ -210,8 +210,8 @@ class NodeCreationView(generics.CreateAPIView):
 
     def initial(self, request, *args, **kwargs):
         authentication_dict = {}
-        authentication_dict['student'] = ['GET', 'PUT', 'DELETE']
-        authentication_dict['teacher'] = ['GET', 'PUT', 'DELETE']
+        authentication_dict['student'] = ['POST']
+        authentication_dict['teacher'] = ['POST']
         if 'role' not in request.session:
             raise PermissionDenied("not logged in")
         if request.method not in authentication_dict[request.session['role']]:
@@ -285,10 +285,10 @@ def student_login(request):
             login_result['result'] = 'success'
             return Response(data=login_result,status=status.HTTP_200_OK)
         else:
-            login_result['result'] = 'wrong_password'
+            login_result['result'] = 'failure'
             return Response(data=login_result,status=status.HTTP_404_NOT_FOUND)
     else:
-        login_result['result'] = 'no such student'
+        login_result['result'] = 'failure'
         return Response(data=login_result,status=status.HTTP_404_NOT_FOUND)
 
 
@@ -307,10 +307,10 @@ def teacher_login(request):
             login_result['result'] = 'success'
             return Response(data=login_result,status=status.HTTP_200_OK)
         else:
-            login_result['result'] = 'wrong_password'
+            login_result['result'] = 'failure'
             return Response(data=login_result,status=status.HTTP_404_NOT_FOUND)
     else:
-        login_result['result'] = 'no such teacher'
+        login_result['result'] = 'failure'
         return Response(data=login_result,status=status.HTTP_404_NOT_FOUND)
 
 
@@ -321,7 +321,7 @@ def logout(request):
         del request.session['role']
     except KeyError:
         pass
-    return Response({'logout':'true'})
+    return Response({'logout':'true'},status=status.HTTP_200_OK)
 
 
 def load_tree_teacher(node):
@@ -346,7 +346,7 @@ def load_tree_student(node,student_id):
                 answer = answer[0]
                 choice_question['answer'] = answer.answer
             else:
-                choice_question['answer'] = []
+                choice_question['answer'] = None
         for text_question in homework['text_questions']:
             current_question = TextQuestion.objects.filter(pk=text_question['pk'])[0]
             current_student = Student.objects.filter(student_id=student_id)
@@ -355,7 +355,7 @@ def load_tree_student(node,student_id):
                 answer = answer[0]
                 text_question['answer'] = answer.answer
             else:
-                text_question['answer'] = []
+                text_question['answer'] = None
 
     for child in node.get_children():
         result_data['children'].append(load_tree_student(child,student_id))
@@ -365,7 +365,7 @@ def load_tree_student(node,student_id):
 @api_view(['GET'])
 def get_tree(request):
     if 'role' not in request.session:
-        raise PermissionDenied("not logged in")
+        raise PermissionDenied("login first")
     module_dir = os.path.dirname(__file__)
     file_path = os.path.join(module_dir, 'root.json')
     with open(file_path, "r") as f:
@@ -392,13 +392,13 @@ def register(request,role):
             serializer.save()
             return Response(data=serializer.validated_data,status=status.HTTP_201_CREATED)
         else:
-            return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+            return Response(data={"error_message":serializer.errors},status=status.HTTP_400_BAD_REQUEST)
     elif role == 'teacher':
         serializer = TeacherSerializer(data=input_data)
         if serializer.is_valid():
             serializer.save()
             return Response(data=serializer.validated_data,status=status.HTTP_201_CREATED)
         else:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+            return Response(data={"error_message":serializer.errors},status=status.HTTP_400_BAD_REQUEST)
     else:
-        return Response(status=status.HTTP_400_BAD_REQUEST)
+        return Response(data={"error_message":"wrong role"},status=status.HTTP_400_BAD_REQUEST)
