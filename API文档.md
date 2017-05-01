@@ -191,3 +191,18 @@ and not change the question in the homework and update the homework
 2. Answers cannot be updated or deleted(easy to change,should you need to)
 3. pk should not be changed and need not be provided in creation
 4. when creating a model do remember to add pk for foreign keys
+
+# Material
+``` JSON
+    {
+        material_name(char max = 100)
+        pk (integer)
+        node (integer pk for corresponding node)
+        material_file(char )
+    }
+```
+* request
+```
+(get,put,delete)url:/tree/material/+<pk>
+(post)url:/tree/material
+```
