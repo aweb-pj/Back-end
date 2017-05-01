@@ -73,6 +73,7 @@ method；DELETE
     homework (list of Homework)
     pk (integer)
     parent (integer pk of parent)
+    
 }
 
 (get,put,delete)url:/tree/node/pk
