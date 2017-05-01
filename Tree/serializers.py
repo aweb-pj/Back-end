@@ -5,14 +5,14 @@ from Tree.models import *
 class TextQuestionSerializer(serializers.ModelSerializer):
     class Meta:
         model = TextQuestion
-        fields = ('prompt','pk','homework')
+        fields = ('prompt','pk','homework','correct_answer','order')
         read_only_fields = ('pk',)
 
 
 class ChoiceQuestionSerializer(serializers.ModelSerializer):
     class Meta:
         model = ChoiceQuestion
-        fields = ('prompt','A','B','C','D','pk','homework')
+        fields = ('prompt','A','B','C','D','pk','homework','correct_answer','order')
         read_only_fields = ('pk',)
 
 
@@ -22,7 +22,7 @@ class HomeworkSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Homework
-        fields = ('homework_name','choice_questions','text_questions','pk','node')
+        fields = ('homework_name','choice_questions','text_questions','pk','node','visible')
         read_only_fields = ('pk',)
 
 
