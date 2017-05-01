@@ -105,6 +105,8 @@ method；DELETE
     D (char,max 100)
     pk (integer)
     homework (integer pk for corresponding homework)
+    order (integer)
+    correct_answer(char, max 100)
 }
 
 (get,put,delete)url:/tree/choicequestion/pk
@@ -118,6 +120,8 @@ method；DELETE
     prompt (char,max 100)
     pk (integer)
     homework (integer pk for corresponding homework)
+    order (integer)
+    correct_answer(char, max 100)
 }
 
 (get,put,delete)url:/tree/textquestion/pk
